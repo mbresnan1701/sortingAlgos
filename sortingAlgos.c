@@ -6,20 +6,21 @@ int* mergeSort(int* arr, int arrLen);
 void bubbleSort(int* arr, int arrLen);
 void selectionSort(int* arr, int arrLen);
 void insertionSort(int* arr, int arrLen);
+void quickSort(int* arr, int arrLen, int start, int stop);
 
-void shiftElementsRight(int* arr, int arrLen,  int start, int stop);
-void shiftElementsLeft(int* arr, int arrLen,  int start, int stop);
-void relocateElement(int* arr, int arrLen, int targetIndex, int currentIndex);
+void shiftElementsRight(int* arr, int start, int stop);
+void shiftElementsLeft(int* arr, int start, int stop);
+void relocateElement(int* arr, int targetIndex, int currentIndex);
 
 int main(int argc, char **argv)
 {
-  // int arr[10] = {11, 22, 41, 5, 16, 71, 18, 9, 1, 66};
-  int arr[4] = {69, 16, 17, 66};
+  int arr[10] = {11, 22, 41, 5, 16, 71, 18, 9, 1, 66};
+  // int arr[4] = {69, 16, 17, 66};
   int size = sizeof(arr) / sizeof(int);
   // int* merged = selectionSort(arr, size);
   // int* sorted = selectionSort(arr, size);
-  insertionSort(arr, size);
-  printf("Insertion list is: \n");
+  quickSort(arr, size, 0, size - 1);
+  printf("Quick list is: \n");
   for(int i = 0; i < size; i++)
   {
     printf("%i ", arr[i]);
@@ -140,7 +141,7 @@ void selectionSort(int* arr, int arrLen)
 
     if(minIndex != placed)
     {
-      relocateElement(arr, arrLen, placed, minIndex);
+      relocateElement(arr, placed, minIndex);
     }
 
     placed++;
@@ -156,33 +157,57 @@ void insertionSort(int* arr, int arrLen)
     {
       if(arr[j] >= arr[i])
       {
-        relocateElement(arr, arrLen, j, i);
+        relocateElement(arr, j, i);
       }
     }
     currentIndex++;
   }
 }
 
-void relocateElement(int* arr, int arrLen, int targetIndex, int currentIndex)
+void quickSort(int* arr, int arrLen, int start, int stop)
+{
+  int pivotIndex = stop;
+  int currentIndex = start;
+
+  if(stop - start <= 1)
+  {
+    return;
+  }
+
+  for(int i = start; i < pivotIndex; i++)
+  {
+    if(arr[i] <= arr[pivotIndex])
+    {
+      relocateElement(arr, currentIndex++, i);
+    }
+  }
+
+  relocateElement(arr, currentIndex, pivotIndex);
+  quickSort(arr, arrLen, start, currentIndex - 1);
+  quickSort(arr, arrLen, currentIndex + 1, stop);
+  return;
+}
+
+void relocateElement(int* arr, int targetIndex, int currentIndex)
 {
   if(targetIndex != currentIndex)
   {
     int temp = arr[currentIndex];
     if(targetIndex < currentIndex)
     {
-      shiftElementsRight(arr, arrLen, currentIndex, targetIndex);
+      shiftElementsRight(arr, currentIndex, targetIndex);
       arr[targetIndex] = temp;
     }
     else if(targetIndex > currentIndex)
     {
-      shiftElementsLeft(arr, arrLen, currentIndex, targetIndex);
+      shiftElementsLeft(arr, currentIndex, targetIndex);
       arr[targetIndex] = temp;
     }
   }
 
 }
 
-void shiftElementsRight(int* arr, int arrLen, int start, int stop)
+void shiftElementsRight(int* arr, int start, int stop)
 {
   for(int i = start; i > stop; i--)
   {
@@ -190,7 +215,7 @@ void shiftElementsRight(int* arr, int arrLen, int start, int stop)
   }
 }
 
-void shiftElementsLeft(int* arr, int arrLen, int start, int stop)
+void shiftElementsLeft(int* arr, int start, int stop)
 {
   for(int i = start; i < stop; i++)
   {
