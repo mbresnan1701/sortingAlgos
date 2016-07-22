@@ -3,17 +3,20 @@
 #include <string.h>
 
 int* mergeSort(int* arr, int arrLen);
+int* bubbleSort(int* arr, int arrLen);
+
 
 int main(int argc, char **argv)
 {
-  int arr[9] = {11, 22, 41, 5, 16, 71, 18, 9, 1};
+  int arr[10] = {11, 22, 41, 5, 16, 71, 18, 9, 1, 66};
   // int arr[5] = {3, 2, 1, 16, 2};
   int size = sizeof(arr) / sizeof(int);
-  int* merged = mergeSort(arr, size);
-  printf("Merged list is: \n");
+  // int* merged = mergeSort(arr, size);
+  int* sorted = bubbleSort(arr, size);
+  printf("Bubbled list is: \n");
   for(int i = 0; i < size; i++)
   {
-    printf("%i ", merged[i]);
+    printf("%i ", sorted[i]);
   }
   return 0;
 }
@@ -85,3 +88,43 @@ int* mergeSort(int* arr, int arrLen)
     return merged;
   }
 }
+
+int* bubbleSort(int* arr, int arrLen)
+{
+  int changeMade = 0;
+  while(1)
+  {
+    for(int i = 0; i < arrLen - 1; i++)
+    {
+      if(arr[i] > arr[i + 1])
+      {
+        arr[i] = arr[i] ^ arr[i + 1];
+        arr[i + 1] = arr[i] ^ arr[i + 1];
+        arr[i] = arr[i] ^ arr[i + 1];
+        changeMade = 1;
+      }
+    }
+    if(changeMade == 0)
+    {
+      break;
+    }
+    else
+    {
+      changeMade = 0;
+    }
+  }
+  return arr;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
