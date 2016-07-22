@@ -5,6 +5,8 @@
 int* mergeSort(int* arr, int arrLen);
 void bubbleSort(int* arr, int arrLen);
 void selectionSort(int* arr, int arrLen);
+void insertionSort(int* arr, int arrLen);
+
 void shiftElementsRight(int* arr, int arrLen,  int start, int stop);
 void shiftElementsLeft(int* arr, int arrLen,  int start, int stop);
 void relocateElement(int* arr, int arrLen, int targetIndex, int currentIndex);
@@ -12,12 +14,12 @@ void relocateElement(int* arr, int arrLen, int targetIndex, int currentIndex);
 int main(int argc, char **argv)
 {
   // int arr[10] = {11, 22, 41, 5, 16, 71, 18, 9, 1, 66};
-  int arr[6] = {69, 3, 2, 1, 16, 17};
+  int arr[4] = {69, 16, 17, 66};
   int size = sizeof(arr) / sizeof(int);
   // int* merged = selectionSort(arr, size);
   // int* sorted = selectionSort(arr, size);
-  selectionSort(arr, size);
-  printf("Selection list is: \n");
+  insertionSort(arr, size);
+  printf("Insertion list is: \n");
   for(int i = 0; i < size; i++)
   {
     printf("%i ", arr[i]);
@@ -145,6 +147,22 @@ void selectionSort(int* arr, int arrLen)
   }
 }
 
+void insertionSort(int* arr, int arrLen)
+{
+  int currentIndex = 0;
+  for(int i = 1; i < arrLen; i++)
+  {
+    for(int j = 0; j <= currentIndex; j++)
+    {
+      if(arr[j] >= arr[i])
+      {
+        relocateElement(arr, arrLen, j, i);
+      }
+    }
+    currentIndex++;
+  }
+}
+
 void relocateElement(int* arr, int arrLen, int targetIndex, int currentIndex)
 {
   if(targetIndex != currentIndex)
@@ -185,8 +203,9 @@ void shiftElementsLeft(int* arr, int arrLen, int start, int stop)
 
 // [3, 2, 1, 4, 6]
 // [2, 1, 4, 3, 6]
-  // int arr[5] = {3, 2, 1, 16, 17};
-  //              {1, 3, 2, 16, 17}
+  // int arr[5] = {69, 16, 17};
+  //              {16, 69, 17}
+
 
 
 
