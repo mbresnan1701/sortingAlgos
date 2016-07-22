@@ -3,20 +3,24 @@
 #include <string.h>
 
 int* mergeSort(int* arr, int arrLen);
-int* bubbleSort(int* arr, int arrLen);
-
+void bubbleSort(int* arr, int arrLen);
+void selectionSort(int* arr, int arrLen);
+void shiftElementsRight(int* arr, int arrLen,  int start, int stop);
+void shiftElementsLeft(int* arr, int arrLen,  int start, int stop);
+void relocateElement(int* arr, int arrLen, int targetIndex, int currentIndex);
 
 int main(int argc, char **argv)
 {
-  int arr[10] = {11, 22, 41, 5, 16, 71, 18, 9, 1, 66};
-  // int arr[5] = {3, 2, 1, 16, 2};
+  // int arr[10] = {11, 22, 41, 5, 16, 71, 18, 9, 1, 66};
+  int arr[6] = {69, 3, 2, 1, 16, 17};
   int size = sizeof(arr) / sizeof(int);
-  // int* merged = mergeSort(arr, size);
-  int* sorted = bubbleSort(arr, size);
-  printf("Bubbled list is: \n");
+  // int* merged = selectionSort(arr, size);
+  // int* sorted = selectionSort(arr, size);
+  selectionSort(arr, size);
+  printf("Selection list is: \n");
   for(int i = 0; i < size; i++)
   {
-    printf("%i ", sorted[i]);
+    printf("%i ", arr[i]);
   }
   return 0;
 }
@@ -89,7 +93,7 @@ int* mergeSort(int* arr, int arrLen)
   }
 }
 
-int* bubbleSort(int* arr, int arrLen)
+void bubbleSort(int* arr, int arrLen)
 {
   int changeMade = 0;
   while(1)
@@ -113,14 +117,76 @@ int* bubbleSort(int* arr, int arrLen)
       changeMade = 0;
     }
   }
-  return arr;
 }
 
+void selectionSort(int* arr, int arrLen)
+{
+  int placed = 0;
+  int minIndex;
+  while(placed < arrLen - 1)
+  {
 
+    minIndex = placed;
 
+    for(int i = placed; i < arrLen; i++)
+    {
+      if(arr[i] < arr[minIndex])
+      {
+        minIndex = i;
+      }
+    }
 
+    if(minIndex != placed)
+    {
+      relocateElement(arr, arrLen, placed, minIndex);
+    }
 
+    placed++;
+  }
+}
 
+void relocateElement(int* arr, int arrLen, int targetIndex, int currentIndex)
+{
+  if(targetIndex != currentIndex)
+  {
+    int temp = arr[currentIndex];
+    if(targetIndex < currentIndex)
+    {
+      shiftElementsRight(arr, arrLen, currentIndex, targetIndex);
+      arr[targetIndex] = temp;
+    }
+    else if(targetIndex > currentIndex)
+    {
+      shiftElementsLeft(arr, arrLen, currentIndex, targetIndex);
+      arr[targetIndex] = temp;
+    }
+  }
+
+}
+
+void shiftElementsRight(int* arr, int arrLen, int start, int stop)
+{
+  for(int i = start; i > stop; i--)
+  {
+    arr[i] = arr[i - 1];
+  }
+}
+
+void shiftElementsLeft(int* arr, int arrLen, int start, int stop)
+{
+  for(int i = start; i < stop; i++)
+  {
+    arr[i] = arr[i + 1];
+  }
+}
+
+// [3, 2, 1, 4, 6]
+// [3, 6, 2, 1, 4]
+
+// [3, 2, 1, 4, 6]
+// [2, 1, 4, 3, 6]
+  // int arr[5] = {3, 2, 1, 16, 17};
+  //              {1, 3, 2, 16, 17}
 
 
 
